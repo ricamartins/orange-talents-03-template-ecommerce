@@ -10,16 +10,17 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.zup.ecommerce.models.Usuario;
+import com.zup.ecommerce.validations.Unique;
 
 public class UsuarioRequest {
 
-	@NotEmpty @Email
+	@NotEmpty @Email @Unique(clazz=Usuario.class, field="email")
 	private String email;
 	
 	@NotEmpty @Size(min=6, max=50)
 	private String senha;
 
-	public UsuarioRequest(@NotEmpty @Email String email, @NotEmpty @Length(min = 6) String senha) {
+	public UsuarioRequest(@NotEmpty @Email String email, @NotEmpty @Length(min=6) String senha) {
 		this.email = email;
 		this.senha = senha;
 	}
