@@ -25,6 +25,7 @@ public class ValidationController {
 	public ErrorResponse errosValidacao(MethodArgumentNotValidException exception) {
 		
 		List<FieldError> errors = exception.getBindingResult().getFieldErrors();
+
 		
 		return criarErrorResponse(errors);
 	}
