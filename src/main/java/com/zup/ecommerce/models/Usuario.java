@@ -1,11 +1,14 @@
 package com.zup.ecommerce.models;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -29,6 +32,9 @@ public class Usuario {
 	@Past
 	private LocalDateTime instanteCadastro;
 	
+	@ManyToMany(fetch=FetchType.EAGER)
+	private List<Role> roles;
+	
 	@Deprecated
 	public Usuario() {}
 	
@@ -37,6 +43,22 @@ public class Usuario {
 		this.email = email;
 		this.senha = senha;
 		this.instanteCadastro = instanteCadastro;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public String getSenha() {
+		return senha;
+	}
+	
+	public List<Role> getRoles() {
+		return roles;
 	}
 	
 }
