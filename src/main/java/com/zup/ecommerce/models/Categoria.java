@@ -22,8 +22,8 @@ public class Categoria {
 	@Deprecated
 	private Categoria() {}
 	
-	public Categoria(Long superCategoriaId) {
-		this.id = superCategoriaId;
+	public Categoria(Long categoriaId) {
+		this.id = categoriaId;
 	}
 	
 	public Categoria(String nome, Categoria superCategoria) {

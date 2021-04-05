@@ -11,7 +11,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Service
 public class JwtService {
 
-	private String expiration = "60000";
+	private String expiration = "86400000";
 	private String secret = "bcuasc8239fd324hd9g3s29dv9234bg923gd9243gd92gd9342gd932dgb23cxb29yg2x9bcx";
 
 	public String gerarToken(Authentication authentication) {

@@ -38,13 +38,17 @@ public class Usuario {
 	@Deprecated
 	public Usuario() {}
 	
+	public Usuario(Long id) {
+		this.id = id;
+	}
+	
 	public Usuario(@NotEmpty @Email String email, @NotEmpty @Length(min = 6) String senha,
 			@Past LocalDateTime instanteCadastro) {
 		this.email = email;
 		this.senha = senha;
 		this.instanteCadastro = instanteCadastro;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
