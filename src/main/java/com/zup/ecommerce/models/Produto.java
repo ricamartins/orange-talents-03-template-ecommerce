@@ -53,6 +53,9 @@ public class Produto {
 	@ManyToOne @NotNull
 	private Usuario usuario;
 
+	@Deprecated
+	public Produto() {}
+
 	public Produto(@NotNull String nome, @NotNull @DecimalMin("0.01") BigDecimal preco,
 			@NotNull @Min(0) Integer quantidade, @NotNull @Length(max = 1000) String descricao,
 			List<CaracteristicaRequest> caracteristicas, @NotNull Categoria categoria, @NotNull Usuario usuario) {
@@ -67,6 +70,10 @@ public class Produto {
 		this.usuario = usuario;
 	}
 
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
