@@ -12,10 +12,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zup.ecommerce.components.EmailSender;
 import com.zup.ecommerce.controllers.dto.OpiniaoRequest;
+import com.zup.ecommerce.controllers.dto.PerguntaRequest;
+import com.zup.ecommerce.controllers.dto.PerguntaResponse;
 import com.zup.ecommerce.controllers.dto.ProdutoRequest;
+import com.zup.ecommerce.models.Pergunta;
 import com.zup.ecommerce.models.Produto;
 import com.zup.ecommerce.repositories.OpiniaoRepository;
+import com.zup.ecommerce.repositories.PerguntaRepository;
 import com.zup.ecommerce.repositories.ProdutoRepository;
 import com.zup.ecommerce.security.UsuarioLogin;
 import com.zup.ecommerce.validations.ErrorResponse;
@@ -26,10 +31,17 @@ public class ProdutoController {
 
 	private ProdutoRepository produtoRepository;
 	private OpiniaoRepository opiniaoRepository;
-
-	public ProdutoController(ProdutoRepository produtoRepository, OpiniaoRepository opiniaoRepository) {
+	private PerguntaRepository perguntaRepository;
+	private EmailSender emailSender;
+	
+	public ProdutoController(ProdutoRepository produtoRepository,
+			OpiniaoRepository opiniaoRepository,
+			PerguntaRepository perguntaRepository,
+			EmailSender emailSender) {
 		this.produtoRepository = produtoRepository;
 		this.opiniaoRepository = opiniaoRepository;
+		this.perguntaRepository = perguntaRepository;
+		this.emailSender = emailSender;
 	}
 	
 	@PostMapping
@@ -39,7 +51,7 @@ public class ProdutoController {
 	}
 	
 	@PostMapping("/{id}/opinioes")
-	public ResponseEntity<?> post(@PathVariable Long id, @RequestBody @Valid OpiniaoRequest request, @AuthenticationPrincipal UsuarioLogin usuario) {
+	public ResponseEntity<?> postarOpiniao(@PathVariable Long id, @RequestBody @Valid OpiniaoRequest request, @AuthenticationPrincipal UsuarioLogin usuario) {
 		
 		Optional<Produto> produto = produtoRepository.findById(id);
 		if (produto.isEmpty())
@@ -48,5 +60,22 @@ public class ProdutoController {
 		
 		opiniaoRepository.save(request.convert(usuario.getId(), produto.get()));
 		return ResponseEntity.ok().build();
+	}
+	
+	@PostMapping("/{id}/perguntas")
+	public ResponseEntity<?> criarPergunta(@PathVariable Long id, @RequestBody @Valid PerguntaRequest request, @AuthenticationPrincipal UsuarioLogin usuario) {
+		
+		Optional<Produto> produto = produtoRepository.findById(id);
+		if (produto.isEmpty())
+			return ResponseEntity.badRequest()
+				.body(new ErrorResponse("produto_id", "Id de produto inexistente"));
+		
+		Pergunta pergunta = perguntaRepository.save(request.convert(usuario.getId(), produto.get()));
+		
+		if (!emailSender.send(pergunta))
+			return ResponseEntity.badRequest()
+					.body(new ErrorResponse("email", "Erro ao enviar o email"));
+			
+		return ResponseEntity.ok(new PerguntaResponse(pergunta));
 	}
 }
