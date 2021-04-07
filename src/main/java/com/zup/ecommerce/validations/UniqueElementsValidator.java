@@ -22,7 +22,6 @@ public class UniqueElementsValidator implements ConstraintValidator<UniqueElemen
 		Set<Object> set = new HashSet<>();
 		List<Object> duplicates = collection.stream().filter(o -> !set.add(o)).collect(Collectors.toList());
 		
-		System.out.println("tá vazio?: "+duplicates.isEmpty());
 		if (duplicates.isEmpty())
 			return true;
 		

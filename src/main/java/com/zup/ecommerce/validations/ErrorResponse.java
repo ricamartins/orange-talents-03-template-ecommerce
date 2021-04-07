@@ -10,6 +10,12 @@ public class ErrorResponse {
 
 	private Map<String, List<String>> errors = new HashMap<>();
 	
+	public ErrorResponse() {}
+
+	public ErrorResponse(String field, String message) {
+		this.addError(field, message);
+	}
+
 	public Map<String, List<String>> getErrors() {
 		return errors;
 	}

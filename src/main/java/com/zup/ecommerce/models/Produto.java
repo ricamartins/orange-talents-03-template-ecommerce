@@ -56,6 +56,10 @@ public class Produto {
 	@Deprecated
 	public Produto() {}
 
+	public Produto(Long id) {
+		this.id = id;
+	}
+	
 	public Produto(@NotNull String nome, @NotNull @DecimalMin("0.01") BigDecimal preco,
 			@NotNull @Min(0) Integer quantidade, @NotNull @Length(max = 1000) String descricao,
 			List<CaracteristicaRequest> caracteristicas, @NotNull Categoria categoria, @NotNull Usuario usuario) {
