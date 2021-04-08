@@ -31,6 +31,9 @@ public class Pergunta {
 	
 	@ManyToOne
 	private Usuario usuario;
+	
+	@Deprecated
+	public Pergunta() {}
 
 	public Pergunta(String titulo, String corpo, Produto produto, Usuario usuario) {
 		this.titulo = titulo;

@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import com.zup.ecommerce.controllers.dto.OpiniaoRequest;
 import com.zup.ecommerce.controllers.dto.PerguntaRequest;
 import com.zup.ecommerce.controllers.dto.PerguntaResponse;
 import com.zup.ecommerce.controllers.dto.ProdutoRequest;
+import com.zup.ecommerce.controllers.dto.ProdutoResponse;
 import com.zup.ecommerce.models.Pergunta;
 import com.zup.ecommerce.models.Produto;
 import com.zup.ecommerce.repositories.OpiniaoRepository;
@@ -77,5 +79,16 @@ public class ProdutoController {
 					.body(new ErrorResponse("email", "Erro ao enviar o email"));
 			
 		return ResponseEntity.ok(new PerguntaResponse(pergunta));
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<?> buscarDetalhesProduto(@PathVariable Long id) {
+		
+		Optional<Produto> produto = produtoRepository.findById(id);
+		if (produto.isEmpty())
+			return ResponseEntity.badRequest()
+				.body(new ErrorResponse("produto_id", "Id de produto inexistente"));
+		
+		return ResponseEntity.ok(new ProdutoResponse(produto.get()));
 	}
 }

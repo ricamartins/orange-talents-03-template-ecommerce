@@ -18,6 +18,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import com.zup.ecommerce.controllers.dto.CaracteristicaRequest;
@@ -42,7 +43,8 @@ public class Produto {
 	@NotNull @Length(max=1000)
 	private String descricao;
 	
-	private LocalDateTime instanteCadastro = LocalDateTime.now();
+	@CreationTimestamp
+	private LocalDateTime instanteCadastro;
 	
 	@OneToMany(mappedBy="produto", cascade=CascadeType.PERSIST)
 	private Set<Caracteristica> caracteristicas;
@@ -53,6 +55,15 @@ public class Produto {
 	@ManyToOne @NotNull
 	private Usuario usuario;
 
+	@OneToMany(mappedBy="produto")
+	private List<Imagem> imagens;
+	
+	@OneToMany(mappedBy="produto")
+	private List<Opiniao> opinioes;
+	
+	@OneToMany(mappedBy="produto")
+	private List<Pergunta> perguntas;
+	
 	@Deprecated
 	public Produto() {}
 
@@ -73,11 +84,39 @@ public class Produto {
 		this.categoria = categoria;
 		this.usuario = usuario;
 	}
+	
+	public String getNome() {
+		return nome;
+	}
+
+	public BigDecimal getPreco() {
+		return preco;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public Set<Caracteristica> getCaracteristicas() {
+		return caracteristicas;
+	}
 
 	public Usuario getUsuario() {
 		return usuario;
 	}
+
+	public List<Imagem> getImagens() {
+		return imagens;
+	}
 	
+	public List<Opiniao> getOpinioes() {
+		return opinioes;
+	}
+
+	public List<Pergunta> getPerguntas() {
+		return perguntas;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -102,6 +141,5 @@ public class Produto {
 			return false;
 		return true;
 	}
-	
 	
 }

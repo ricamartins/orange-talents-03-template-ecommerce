@@ -22,12 +22,23 @@ public class Caracteristica {
 	@ManyToOne
 	private Produto produto;
 	
+	@Deprecated
+	public Caracteristica() {}
+	
 	public Caracteristica(String nome, String descricao, Produto produto) {
 		this.nome = nome;
 		this.descricao = descricao;
 		this.produto = produto;
 	}
 
+	public String getNome() {
+		return nome;
+	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
