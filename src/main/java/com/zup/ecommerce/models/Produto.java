@@ -22,6 +22,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import com.zup.ecommerce.controllers.dto.CaracteristicaRequest;
+import com.zup.ecommerce.repositories.ProdutoRepository;
+
 
 @Entity
 @Table(name="tb_produtos")
@@ -85,6 +87,10 @@ public class Produto {
 		this.usuario = usuario;
 	}
 	
+	public Long getId() {
+		return id;
+	}
+	
 	public String getNome() {
 		return nome;
 	}
@@ -139,6 +145,15 @@ public class Produto {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		return true;
+	}
+
+	public boolean abaterEstoque(Integer quantidadePedida, ProdutoRepository repository) {
+		if (quantidade < quantidadePedida)
+			return false;
+		
+		quantidade -= quantidadePedida;
+		repository.save(this);
 		return true;
 	}
 	
